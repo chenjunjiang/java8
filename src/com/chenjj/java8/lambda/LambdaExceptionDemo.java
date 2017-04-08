@@ -6,7 +6,8 @@ package com.chenjj.java8.lambda;
 public class LambdaExceptionDemo {
     public static void main(String[] args) throws EmptyArrayException {
         double[] values = {1.0, 2.0, 3.0, 4.0, 5.0};
-        DoubleNumbericArrayFunc doubleNumbericArrayFunc = n -> {// 这里也可以写成double[] n
+        DoubleNumbericArrayFunc doubleNumbericArrayFunc = n -> {//
+            // 这里也可以写成double[] n
             double sum = 0;
             if (n.length == 0) {
                 throw new EmptyArrayException();
@@ -18,8 +19,10 @@ public class LambdaExceptionDemo {
             return sum;
         };
 
-        System.out.println("The average is " + doubleNumbericArrayFunc.func(values));
+        System.out.println("The average is " + doubleNumbericArrayFunc.func
+                (values));
 
-        System.out.println("The average is " + doubleNumbericArrayFunc.func(new double[0]));
+        System.out.println("The average is " + doubleNumbericArrayFunc.func
+                (new double[0]));
     }
 }
