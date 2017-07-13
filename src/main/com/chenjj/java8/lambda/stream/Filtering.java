@@ -24,6 +24,7 @@ public class Filtering {
                 .filter(i -> i % 2 == 0)
                 .distinct()
                 .forEach(System.out::println);
+        System.out.println("numbers:" + numbers);
 
         // Truncating a stream
         List<Dish> dishesLimit3 =
