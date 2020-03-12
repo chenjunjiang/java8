@@ -1,5 +1,7 @@
 package com.chenjj.java8.lambda.methodReference;
 
+import com.chenjj.java8.model.Apple;
+
 import java.util.Comparator;
 
 /**

@@ -1,13 +1,9 @@
-package com.chenjj.java8.lambda.methodReference;
-
-import java.io.Serializable;
+package com.chenjj.java8.model;
 
 /**
  * Created by Administrator on 2017/3/19.
  */
-public class Apple implements Serializable {
-    private static final long serialVersionUID = 6864309742604556016L;
-
+public class Apple {
     private Integer weight;
     private String color = "";
 

@@ -1,4 +1,4 @@
-package com.chenjj.java8.lambda.stream;
+package com.chenjj.java8.stream;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.OptionalInt;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.chenjj.java8.lambda.stream.Dish.menu;
+import static com.chenjj.java8.stream.Dish.menu;
 
 public class NumericStreams {
 

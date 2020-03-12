@@ -1,8 +1,8 @@
-package com.chenjj.java8.lambda.stream;
+package com.chenjj.java8.stream;
 
 import java.util.Optional;
 
-import static com.chenjj.java8.lambda.stream.Dish.menu;
+import static com.chenjj.java8.stream.Dish.menu;
 
 public class Finding {
 

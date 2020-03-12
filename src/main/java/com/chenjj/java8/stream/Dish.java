@@ -1,4 +1,4 @@
-package com.chenjj.java8.lambda.stream;
+package com.chenjj.java8.stream;
 
 import java.util.*;
 

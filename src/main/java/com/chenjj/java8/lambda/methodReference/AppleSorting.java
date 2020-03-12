@@ -1,5 +1,7 @@
 package com.chenjj.java8.lambda.methodReference;
 
+import com.chenjj.java8.model.Apple;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -9,7 +11,7 @@ import java.util.function.Predicate;
 /**
  * Created by Administrator on 2017/3/19.
  */
-public class Sorting {
+public class AppleSorting {
     public static void main(String[] args) {
         List<Apple> apples = new ArrayList<>();
         apples.addAll(Arrays.asList(new Apple(80, "green"), new Apple(155,

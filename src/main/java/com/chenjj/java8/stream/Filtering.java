@@ -1,9 +1,9 @@
-package com.chenjj.java8.lambda.stream;
+package com.chenjj.java8.stream;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.chenjj.java8.lambda.stream.Dish.menu;
+import static com.chenjj.java8.stream.Dish.menu;
 import static java.util.stream.Collectors.toList;
 
 public class Filtering {
