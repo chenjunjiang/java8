@@ -29,7 +29,7 @@ public class AppleFilter {
         System.out.println(result);
 
         // 定义成泛型之后就可以处理其它类型了
-        result = filter(inventory, (Apple apple) -> "red".equals(apple.getColor()));
+        result = filter(inventory, (apple) -> "red".equals(apple.getColor()));
         System.out.println(result);
     }
 
