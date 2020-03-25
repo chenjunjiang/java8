@@ -1,7 +1,9 @@
 package com.chenjj.java8.stream;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Created by Administrator on 2017/1/24.
@@ -36,5 +38,12 @@ public class Test {
         System.out.println(arrStr[0]);
         System.out.println(arrStr[1]);
         System.out.println(arrStr[2]);
+
+        // 流只能消费一次
+        List<String> title = Arrays.asList("Java8", "In", "Action");
+        Stream<String> s = title.stream();
+        s.forEach(System.out::println);
+        // java.lang.IllegalStateException: stream has already been operated upon or closed
+        // s.forEach(System.out::println);
     }
 }
