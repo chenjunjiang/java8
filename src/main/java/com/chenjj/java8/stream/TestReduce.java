@@ -54,5 +54,17 @@ public class TestReduce {
         System.out.println(count);
         // 计算流中的元素个数
         System.out.println(menu.stream().count());
+
+        /**
+         * reduce 操作可以实现从Stream中生成一个值，其生成的值不是随意的，而是根据指定的计算模型。比如，之前提到count、min和max方
+         * 法，因为常用而被纳入标准库中。事实上，这些方法都是reduce操作。
+         *
+         * reduce方法有三个override的方法：
+         *
+         * Optional<T> reduce(BinaryOperator<T> accumulator);
+         * T reduce(T identity, BinaryOperator<T> accumulator);
+         * <U> U reduce(U identity,BiFunction<U, ? super T, U> accumulator,BinaryOperator<U> combiner);
+         *
+         */
     }
 }
