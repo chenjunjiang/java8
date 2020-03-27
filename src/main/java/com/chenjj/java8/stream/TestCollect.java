@@ -1,6 +1,7 @@
 package com.chenjj.java8.stream;
 
 import java.util.*;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.chenjj.java8.stream.Dish.menu;
@@ -144,6 +145,148 @@ public class TestCollect {
         // 合法地替代joining收集器
         shortMenu = menu.stream().map(Dish::getName).collect(reducing((s1, s2) -> s1 + s2)).get();
         shortMenu = menu.stream().collect(reducing("", Dish::getName, (s1, s2) -> s1 + s2));
+
+        /**
+         * 分组
+         */
+        // 把菜单中的菜按照类型进行分类，有肉的放一组，有鱼的放一组，其他的都放另一组
+        Map<Dish.Type, List<Dish>> dishesByType = menu.stream().collect(groupingBy(Dish::getType));
+        System.out.println(dishesByType);
+
+        // 把热量不到400卡路里的菜划分为“低热量”（diet），热量400到700卡路里的菜划为“普通”（normal），高于700卡路里的划为“高热量”（fat）
+        menu.stream().collect(groupingBy(d -> {
+            if (d.getCalories() <= 400) {
+                return CaloricLevel.DIET;
+            } else if (d.getCalories() <= 700) {
+                return CaloricLevel.NORMAL;
+            } else {
+                return CaloricLevel.FAT;
+            }
+        }));
+
+        /**
+         * 要实现多级分组，我们可以使用一个由双参数版本的Collectors.groupingBy工厂方法创
+         * 建的收集器，它除了普通的分类函数之外，还可以接受collector类型的第二个参数。那么要进
+         * 行二级分组的话，我们可以把一个内层groupingBy传递给外层groupingBy，并定义一个为流
+         * 中项目分类的二级标准
+         */
+        // 先按类型分组再进行热量分组
+        Map<Dish.Type, Map<CaloricLevel, List<Dish>>> dishesByTypeCaloricLevel = menu.stream().collect(
+                // 一级分类函数
+                groupingBy(Dish::getType,
+                        // 二级分类函数
+                        groupingBy(d -> {
+                            if (d.getCalories() <= 400) {
+                                return CaloricLevel.DIET;
+                            } else if (d.getCalories() <= 700) {
+                                return CaloricLevel.NORMAL;
+                            } else {
+                                return CaloricLevel.FAT;
+                            }
+                        })));
+        System.out.println(dishesByTypeCaloricLevel);
+
+        /**
+         * 按子组收集数据
+         */
+        // 传递给第一个groupingBy的第二个收集器可以是任何类型，而不一定是另一个groupingBy。
+        // 例如，要数一数菜单中每类菜有多少个，可以传递counting收集器作为groupingBy收集器的第二个参数
+        Map<Dish.Type, Long> typesCount = menu.stream().collect(groupingBy(Dish::getType, counting()));
+        System.out.println(typesCount);
+        // 按照菜的类型分类,查找菜单中热量最高的菜肴
+        Map<Dish.Type, Optional<Dish>> mostCaloricByType = menu.stream().collect(groupingBy(Dish::getType, maxBy(Comparator.comparingInt(Dish::getCalories))));
+        System.out.println(mostCaloricByType);
+        // 把收集器的结果转换为另一种类型，可以使用Collectors.collectingAndThen工厂方法返回的收集器
+        Map<Dish.Type, Dish> mostCaloricByType1 = menu.stream().collect(
+                groupingBy(Dish::getType,
+                        collectingAndThen(
+                                maxBy(Comparator.comparingInt(Dish::getCalories)),
+                                Optional::get)));
+
+        /**
+         * 一般来说，通过groupingBy工厂方法的第二个参数传递的收集器将会对分到同一组中的所
+         * 有流元素执行进一步归约操作.
+         */
+        // 统计出每一组Dish的所有菜肴热量总和
+        Map<Dish.Type, Integer> totalCaloriesByType = menu.stream().collect(groupingBy(Dish::getType, summingInt(Dish::getCalories)));
+        System.out.println(totalCaloriesByType);
+
+        /**
+         * 常常和groupingBy联合使用的另一个收集器是mapping方法生成的。这个方法接受两
+         * 个参数：一个函数对流中的元素做变换，另一个则将变换的结果对象收集起来。其目的是在累加
+         * 之前对每个输入元素应用一个映射函数，这样就可以让接受特定类型元素的收集器适应不同类型
+         * 的对象。
+         */
+        // 对于每种类型的Dish,菜单中都有哪些CaloricLevel,可以把groupingBy和mapping收集器结合起来
+        Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType = menu.stream().collect(
+                groupingBy(Dish::getType,
+                        mapping(d -> {
+                            if (d.getCalories() <= 400) {
+                                return CaloricLevel.DIET;
+                            } else if (d.getCalories() <= 700) {
+                                return CaloricLevel.NORMAL;
+                            } else {
+                                return CaloricLevel.FAT;
+                            }
+                        }, toSet())));
+        System.out.println(caloricLevelsByType);
+        // 上面这个例子对于返回的Set是什么类型并没有任何保证,但通过使用toCollection可以以有更多的控制。
+        // 例如，你可以给它传递一个构造函数引用来要求HashSet
+        caloricLevelsByType = menu.stream().collect(
+                groupingBy(Dish::getType,
+                        mapping(d -> {
+                            if (d.getCalories() <= 400) {
+                                return CaloricLevel.DIET;
+                            } else if (d.getCalories() <= 700) {
+                                return CaloricLevel.NORMAL;
+                            } else {
+                                return CaloricLevel.FAT;
+                            }
+                        }, toCollection(HashSet::new))));
+
+        /**
+         * 分区是分组的特殊情况：由一个谓词（返回一个布尔值的函数）作为分类函数，它称分区函
+         * 数。分区函数返回一个布尔值，这意味着得到的分组Map的键类型是Boolean，于是它最多可以
+         * 分为两组——true是一组， false是一组。
+         */
+        // 把菜单按照素食和非素食分开
+        Map<Boolean, List<Dish>> partitionedMenu = menu.stream().collect(partitioningBy(Dish::isVegetarian));
+        System.out.println(partitionedMenu);
+        // 对于分区产生的素食和非素食子流再分别按类型对菜肴分组
+        Map<Boolean, Map<Dish.Type, List<Dish>>> vegetarianDishesByType = menu.stream().collect(
+                partitioningBy(Dish::isVegetarian, groupingBy(Dish::getType)));
+        System.out.println(vegetarianDishesByType);
+        // 找到素食和非素食中热量最高的菜
+        Map<Boolean, Dish> mostCaloricPartitionedByVegetarian = menu.stream().collect(
+                partitioningBy(Dish::isVegetarian,
+                        collectingAndThen(
+                                maxBy(Comparator.comparingInt(Dish::getCalories)), Optional::get)));
+        System.out.println(mostCaloricPartitionedByVegetarian);
+
+        // 将数字按质数和非质数分区
+        System.out.println(partitionPrimes(10));
+
+        // 使用自定义Collector(ToListCollector)
+        List<Dish> dishes = menu.stream().collect(new ToListCollector<>());
+        System.out.println(dishes);
+        /**
+         * 对于IDENTITY_FINISH的收集操作，还有一种方法可以得到同样的结果而无需从头实现新
+         * 的Collectors接口。Stream有一个重载的collect方法可以接受另外三个函数——supplier、
+         * accumulator和combiner，其语义和Collector接口的相应方法返回的函数完全相同。
+         * 这种形式虽然比前一个写法更为紧凑和简洁，却不那么易读。此外，以恰当
+         * 的类来实现自己的自定义收集器有助于重用并可避免代码重复。另外值得注意的是，这个
+         * collect方法不能传递任何Characteristics，所以它永远都是一个IDENTITY_FINISH和
+         * CONCURRENT但并非UNORDERED的收集器
+         */
+        dishes = menu.stream().collect(ArrayList::new, List::add, List::addAll);
+        System.out.println(dishes);
+
+        /**
+         * 开发你自己的收集器,让按质数和非质数分区的实现比上边性能更好
+         */
+        Map<Boolean, List<Integer>> partitionPrimes = partitionPrimesWithCustomCollector(10);
+        System.out.println(partitionPrimes);
+
     }
 
     public static class Transaction {
@@ -171,5 +314,41 @@ public class TestCollect {
 
     public enum Currency {
         EUR, USD, JPY, GBP, CHF
+    }
+
+    public enum CaloricLevel {
+        DIET, NORMAL, FAT
+    }
+
+    public static Map<Boolean, List<Integer>> partitionPrimes(int n) {
+        return IntStream.rangeClosed(2, n).boxed().collect(
+                partitioningBy(candidate -> isPrime(candidate)));
+    }
+
+    /*public static Map<Boolean, List<Integer>> partitionPrimesWithCustomCollector(int n) {
+        return IntStream.rangeClosed(2, n).boxed().collect(new PrimeNumbersCollector());
+    }*/
+
+    public static Map<Boolean, List<Integer>> partitionPrimesWithCustomCollector(int n) {
+        return IntStream.rangeClosed(2, n).boxed().collect(() -> new HashMap<Boolean, List<Integer>>() {
+            {
+                put(true, new ArrayList<>());
+                put(false, new ArrayList<>());
+            }
+        }, (acc, candidate) -> {
+            acc.get(PrimeNumbersCollector.isPrime(acc.get(true), candidate)).add(candidate);
+        }, ((map1, map2) -> {
+            map1.get(true).addAll(map2.get(true));
+            map1.get(false).addAll(map2.get(false));
+        }));
+    }
+
+    private static boolean isPrime(int candidate) {
+        System.out.println("candidate:" + candidate);
+        int candidateRoot = (int) Math.sqrt(candidate);
+        System.out.println("candidateRoot:" + candidateRoot);
+        // noneMatch: true if either no elements of the stream match the provided predicate or the stream is empty, otherwise false
+        // 如果candidateRoot小于2,那么生成的IntStream就为空,调用noneMatch直接返回true
+        return IntStream.rangeClosed(2, candidateRoot).noneMatch(i -> candidate % i == 0);
     }
 }
