@@ -1,8 +1,10 @@
 package com.chenjj.java8.stream;
 
+import com.chenjj.java8.model.Dish;
+
 import java.util.Optional;
 
-import static com.chenjj.java8.stream.Dish.menu;
+import static com.chenjj.java8.model.Dish.menu;
 
 public class Finding {
 

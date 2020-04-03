@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.chenjj.java8.stream.Dish.menu;
+import static com.chenjj.java8.model.Dish.menu;
 
 /**
  * Created by Administrator on 2017/4/4.

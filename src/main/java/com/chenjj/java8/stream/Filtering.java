@@ -1,9 +1,11 @@
 package com.chenjj.java8.stream;
 
+import com.chenjj.java8.model.Dish;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.chenjj.java8.stream.Dish.menu;
+import static com.chenjj.java8.model.Dish.menu;
 import static java.util.stream.Collectors.toList;
 
 /**

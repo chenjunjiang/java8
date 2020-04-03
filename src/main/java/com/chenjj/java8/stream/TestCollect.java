@@ -1,10 +1,14 @@
 package com.chenjj.java8.stream;
 
+import com.chenjj.java8.enum1.CaloricLevel;
+import com.chenjj.java8.enum1.Currency;
+import com.chenjj.java8.model.Dish;
+
 import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.chenjj.java8.stream.Dish.menu;
+import static com.chenjj.java8.model.Dish.menu;
 import static java.util.stream.Collectors.*;
 
 /**
@@ -310,14 +314,6 @@ public class TestCollect {
         public String toString() {
             return currency + " " + value;
         }
-    }
-
-    public enum Currency {
-        EUR, USD, JPY, GBP, CHF
-    }
-
-    public enum CaloricLevel {
-        DIET, NORMAL, FAT
     }
 
     public static Map<Boolean, List<Integer>> partitionPrimes(int n) {

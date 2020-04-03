@@ -1,10 +1,12 @@
 package com.chenjj.java8.stream;
 
+import com.chenjj.java8.model.Dish;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.chenjj.java8.stream.Dish.menu;
+import static com.chenjj.java8.model.Dish.menu;
 
 /**
  * 另一个常见的数据处理套路是看看数据集中的某些元素是否匹配一个给定的属性。 Stream

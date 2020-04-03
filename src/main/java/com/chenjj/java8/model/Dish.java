@@ -1,4 +1,6 @@
-package com.chenjj.java8.stream;
+package com.chenjj.java8.model;
+
+import com.chenjj.java8.enum1.CaloricLevel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +46,16 @@ public class Dish {
     }
 
     public enum Type {MEAT, FISH, OTHER}
+
+    public CaloricLevel getCaloricLevel() {
+        if (this.getCalories() <= 400) {
+            return CaloricLevel.DIET;
+        } else if (this.getCalories() <= 700) {
+            return CaloricLevel.NORMAL;
+        } else {
+            return CaloricLevel.FAT;
+        }
+    }
 
     @Override
     public String toString() {

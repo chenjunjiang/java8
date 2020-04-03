@@ -1,11 +1,13 @@
 package com.chenjj.java8.stream;
 
+import com.chenjj.java8.model.Dish;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static com.chenjj.java8.stream.Dish.menu;
+import static com.chenjj.java8.model.Dish.menu;
 import static java.util.stream.Collectors.toList;
 
 /**

@@ -1,12 +1,14 @@
 package com.chenjj.java8.stream;
 
+import com.chenjj.java8.model.Dish;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.chenjj.java8.stream.Dish.menu;
+import static com.chenjj.java8.model.Dish.menu;
 
 /**
  * 数值流

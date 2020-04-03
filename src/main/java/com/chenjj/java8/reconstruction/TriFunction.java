@@ -1,0 +1,5 @@
+package com.chenjj.java8.reconstruction;
+
+public interface TriFunction<T, U, V, R> {
+    R apply(T t, U u, V v);
+}
