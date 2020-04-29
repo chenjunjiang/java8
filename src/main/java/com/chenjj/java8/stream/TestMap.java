@@ -3,8 +3,10 @@ package com.chenjj.java8.stream;
 import com.chenjj.java8.model.Dish;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.chenjj.java8.model.Dish.menu;
@@ -125,5 +127,10 @@ public class TestMap {
             }
             System.out.println();
         });
+
+        // 合并list并去重
+        List<String> result2 = Stream.of(Arrays.asList("1", "1", "3"), Arrays.asList("1", "2"))
+                .flatMap(Collection::stream).distinct().collect(Collectors.toList());
+        System.out.println(result2);
     }
 }
