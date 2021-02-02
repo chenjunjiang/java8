@@ -285,5 +285,19 @@ public class DateTimeExamples {
         OffsetDateTime offsetDateTime = OffsetDateTime.of(localDateTime1, newYorkOffset);
         System.out.println(localDateTime1);
         System.out.println(offsetDateTime); // 2020-04-16T18:48:55.038-05:00
+
+        System.out.println("------------------------------");
+        LocalDate today = LocalDate.now();
+        LocalDateTime dayTime25 = LocalDateTime.of(today.getYear(), today.getMonth(), 25, 0, 0,0);
+        LocalDateTime nextdayTime24 = LocalDateTime.of(today.getYear(), today.getMonth().plus(1), 24, 23, 59,59);
+        //本月的最后一天
+        LocalDate lastDay = today.with(TemporalAdjusters.lastDayOfMonth());
+        System.out.println("本月的25号" + dayTime25);
+        System.out.println("下月的24号" + nextdayTime24);
+        long start = dayTime25.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        long end = nextdayTime24.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        System.out.println(start);
+        System.out.println(end);
+        System.out.println("本月的最后一天" + lastDay);
     }
 }

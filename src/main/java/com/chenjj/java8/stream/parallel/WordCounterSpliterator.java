@@ -74,7 +74,7 @@ public class WordCounterSpliterator implements Spliterator<Character> {
     }
 
     /**
-     * 当trySplit返回null，即不可再拆分了，就开始执行tryAdvance处理元素
+     * 当trySplit()返回null，即不可再拆分了，就开始执行tryAdvance处理元素
      * <p>
      * tryAdvance方法把String中当前位置的Character传给了Consumer，并让位置加一。
      * 作为参数传递的Consumer是一个Java内部类，在遍历流时将要处理的Character传给了
