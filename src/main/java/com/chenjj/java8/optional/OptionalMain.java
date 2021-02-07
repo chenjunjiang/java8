@@ -8,6 +8,12 @@ import java.util.Properties;
 import static org.junit.Assert.assertEquals;
 
 /**
+ * 如果发现自己在编写的方法始终无法返回值，并且相信该方法的用户每次
+ * 在调用它时都要考虑到这种可能性，那么或许就应该返回一个 optional 。
+ * 但是，应当注意到与返回 optional 相关的真实的性能影响；
+ * 对于注重性能的方法，最好是返回一个 null ，或者抛出异常 。
+ * 最后，尽量不要将 optional 用作返回值以外的任何其他用途 。
+ * <p>
  * 声明方法接受一个Optional参数，或者将结果作为Optional类型返回，让
  * 你的同事或者未来你方法的使用者，很清楚地知道它可以接受空值，或者它可能返回一个空值。
  * <p>
